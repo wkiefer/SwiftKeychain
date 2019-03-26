@@ -46,7 +46,10 @@ extension KeychainItemType {
     internal var attributesToSave: [String: Any] {
         
         var itemAttributes = attributes
-        let archivedData = NSKeyedArchiver.archivedData(withRootObject: dataToStore)
+        var archivedData = Data()
+        if #available(OSX 10.11, *) {
+            archivedData = NSKeyedArchiver.archivedData(withRootObject: dataToStore)
+        }
         
         itemAttributes[String(kSecValueData)] = archivedData
         
